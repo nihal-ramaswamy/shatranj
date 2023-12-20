@@ -3,11 +3,15 @@ package main
 import (
 	"board"
 	"fmt"
+	"player"
 	"search"
 )
 
 func main() {
-	board := board.InitBoard()
+	whitePlayer := player.NewPlayer("white", true)
+	blackPlayer := player.NewPlayer("black", false)
+	board := board.InitBoard(whitePlayer, blackPlayer)
+
 	fmt.Println(board)
 	fmt.Println(search.GetAllValidPositions(&board, true))
 }

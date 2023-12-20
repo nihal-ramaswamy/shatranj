@@ -1,8 +1,9 @@
 package board
 
 import "board/dto"
+import "player"
 
-func InitBoard() board.Board {
+func InitBoard(whitePlayer, blackPlayer player.Player) board.Board {
 	b := board.Board{}
 
 	b.BPawn = 0x000000000000FF00
@@ -17,5 +18,10 @@ func InitBoard() board.Board {
 	b.WRook = 0x8100000000000000
 	b.WQueen = 0x0800000000000000
 	b.WKing = 0x1000000000000000
+
+	b.White = whitePlayer
+	b.Black = blackPlayer
+	b.Turn = true // White goes first
+
 	return b
 }
