@@ -92,7 +92,7 @@ func getAllValidPositionsForPiece(
 	return positions
 }
 
-func GetAllValidPositions(board *boardDto.Board, playerIsWhite bool) [][][]int {
+func GetAllValidPositions(board boardDto.Board, playerIsWhite bool) [][][]int {
 	var positions [][][]int
 	for i := 0; i < 64; i++ {
 		file := i / 8
@@ -103,7 +103,7 @@ func GetAllValidPositions(board *boardDto.Board, playerIsWhite bool) [][][]int {
 			continue
 		}
 
-		positions = getAllValidPositionsForPiece(board, positions, file, rank)
+		positions = getAllValidPositionsForPiece(&board, positions, file, rank)
 
 	}
 	return positions

@@ -21,6 +21,9 @@ var (
 )
 
 func GetPieceValue(piece pieces.PieceInterface, file, rank int) int {
+	if piece == nil {
+		return 0
+	}
 	switch piece.GetNotation() {
 	case Bpawn.GetNotation():
 		return -(Bpawn.GetWeightBoard()[file][rank] + Bpawn.GetWeight())

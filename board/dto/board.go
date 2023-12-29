@@ -28,29 +28,29 @@ type Board struct {
 
 func (b Board) GetPieceAt(row, col int) pieces.PieceInterface {
 	var pieceType uint64 = 1 << uint64(row*8+col)
-	if b.BPawn&pieceType != 0 {
+	if 0 != b.BPawn&pieceType {
 		return pieces.BpawnPiece
-	} else if b.BKnight&pieceType != 0 {
+	} else if 0 != b.BKnight&pieceType {
 		return pieces.BknightPiece
-	} else if b.BBishop&pieceType != 0 {
+	} else if 0 != b.BBishop&pieceType {
 		return pieces.BbishopPiece
-	} else if b.BRook&pieceType != 0 {
+	} else if 0 != b.BRook&pieceType {
 		return pieces.BrookPiece
-	} else if b.BQueen&pieceType != 0 {
+	} else if 0 != b.BQueen&pieceType {
 		return pieces.BqueenPiece
-	} else if b.BKing&pieceType != 0 {
+	} else if 0 != b.BKing&pieceType {
 		return pieces.BkingPiece
-	} else if b.WPawn&pieceType != 0 {
+	} else if 0 != b.WPawn&pieceType {
 		return pieces.WpawnPiece
-	} else if b.WKnight&pieceType != 0 {
+	} else if 0 != b.WKnight&pieceType {
 		return pieces.WknightPiece
-	} else if b.WBishop&pieceType != 0 {
+	} else if 0 != b.WBishop&pieceType {
 		return pieces.WbishopPiece
-	} else if b.WRook&pieceType != 0 {
+	} else if 0 != b.WRook&pieceType {
 		return pieces.WrookPiece
-	} else if b.WQueen&pieceType != 0 {
+	} else if 0 != b.WQueen&pieceType {
 		return pieces.WqueenPiece
-	} else if b.WKing&pieceType != 0 {
+	} else if 0 != b.WKing&pieceType {
 		return pieces.WkingPiece
 	} else {
 		return nil
@@ -87,34 +87,80 @@ func (b *Board) Move(
 		return
 	}
 
+	b.Turn = !b.Turn
+
 	var srcPiecePos uint64 = 1 << uint64(src[0]*8+src[1])
 	var destPiecePos uint64 = 1 << uint64(dest[0]*8+dest[1])
 
-	notationToPiece := map[string]uint64{
-		pieces.WpawnPiece.GetNotation():   b.WPawn,
-		pieces.WknightPiece.GetNotation(): b.WKnight,
-		pieces.WbishopPiece.GetNotation(): b.WBishop,
-		pieces.WrookPiece.GetNotation():   b.WRook,
-		pieces.WqueenPiece.GetNotation():  b.WQueen,
-		pieces.WkingPiece.GetNotation():   b.WKing,
-		pieces.BpawnPiece.GetNotation():   b.BPawn,
-		pieces.BknightPiece.GetNotation(): b.BKnight,
-		pieces.BbishopPiece.GetNotation(): b.BBishop,
-		pieces.BrookPiece.GetNotation():   b.BRook,
-		pieces.BqueenPiece.GetNotation():  b.BQueen,
-		pieces.BkingPiece.GetNotation():   b.BKing,
+	switch srcPiece.GetNotation() {
+	case pieces.WpawnPiece.GetNotation():
+		b.WPawn ^= srcPiecePos
+		b.WPawn |= destPiecePos
+	case pieces.WknightPiece.GetNotation():
+		b.WKnight ^= srcPiecePos
+		b.WKnight |= destPiecePos
+	case pieces.WbishopPiece.GetNotation():
+		b.WBishop ^= srcPiecePos
+		b.WBishop |= destPiecePos
+	case pieces.WrookPiece.GetNotation():
+		b.WRook ^= srcPiecePos
+		b.WRook |= destPiecePos
+	case pieces.WqueenPiece.GetNotation():
+		b.WQueen ^= srcPiecePos
+		b.WQueen |= destPiecePos
+	case pieces.WkingPiece.GetNotation():
+		b.WKing ^= srcPiecePos
+		b.WKing |= destPiecePos
+	case pieces.BpawnPiece.GetNotation():
+		b.BPawn ^= srcPiecePos
+		b.BPawn |= destPiecePos
+	case pieces.BknightPiece.GetNotation():
+		b.BKnight ^= srcPiecePos
+		b.BKnight |= destPiecePos
+	case pieces.BbishopPiece.GetNotation():
+		b.BBishop ^= srcPiecePos
+		b.BBishop |= destPiecePos
+	case pieces.BrookPiece.GetNotation():
+		b.BRook ^= srcPiecePos
+		b.BRook |= destPiecePos
+	case pieces.BqueenPiece.GetNotation():
+		b.BQueen ^= srcPiecePos
+		b.BQueen |= destPiecePos
+	case pieces.BkingPiece.GetNotation():
+		b.BKing ^= srcPiecePos
+		b.BKing |= destPiecePos
 	}
 
-	makeMove := func(srcPiece, destPiece pieces.PieceInterface) {
-		b.Turn = !b.Turn
-		notationToPiece[srcPiece.GetNotation()] ^= srcPiecePos
-		notationToPiece[srcPiece.GetNotation()] |= destPiecePos
-		if destPiece != nil {
-			notationToPiece[destPiece.GetNotation()] ^= destPiecePos
+	if nil != destPiece {
+
+		switch destPiece.GetNotation() {
+		case pieces.WpawnPiece.GetNotation():
+			b.WPawn ^= destPiecePos
+		case pieces.WknightPiece.GetNotation():
+			b.WKnight ^= destPiecePos
+		case pieces.WbishopPiece.GetNotation():
+			b.WBishop ^= destPiecePos
+		case pieces.WrookPiece.GetNotation():
+			b.WRook ^= destPiecePos
+		case pieces.WqueenPiece.GetNotation():
+			b.WQueen ^= destPiecePos
+		case pieces.WkingPiece.GetNotation():
+			b.WKing ^= destPiecePos
+		case pieces.BpawnPiece.GetNotation():
+			b.BPawn ^= destPiecePos
+		case pieces.BknightPiece.GetNotation():
+			b.BKnight ^= destPiecePos
+		case pieces.BbishopPiece.GetNotation():
+			b.BBishop ^= destPiecePos
+		case pieces.BrookPiece.GetNotation():
+			b.BRook ^= destPiecePos
+		case pieces.BqueenPiece.GetNotation():
+			b.BQueen ^= destPiecePos
+		case pieces.BkingPiece.GetNotation():
+			b.BKing ^= destPiecePos
+
 		}
 	}
-
-	makeMove(srcPiece, destPiece)
 }
 
 func (b Board) String() string {

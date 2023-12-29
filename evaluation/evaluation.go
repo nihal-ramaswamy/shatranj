@@ -4,7 +4,7 @@ import (
 	boardDto "board/dto"
 )
 
-func EvaluateBoard(board *boardDto.Board) int {
+func EvaluateBoard(board boardDto.Board) int {
 	var score int
 	score = 0.0
 	for i := 0; i < 64; i++ {

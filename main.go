@@ -13,5 +13,12 @@ func main() {
 	board := board.InitBoard(whitePlayer, blackPlayer)
 
 	fmt.Println(board)
-	fmt.Println(search.GetAllValidPositions(&board, true))
+
+	startPlayer := true
+	for i := 0; i < 5; i++ {
+		bestMove := search.GetBestMove(board, startPlayer)
+		board.Move(bestMove[0], bestMove[1])
+		startPlayer = !startPlayer
+		fmt.Println(board)
+	}
 }
